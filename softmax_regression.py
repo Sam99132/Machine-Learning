@@ -9,14 +9,14 @@ class Softmax_Regression:
         x = (x-np.mean(x,axis=0))/np.std(x,axis=0)  # axis=0 tells the mean, std functions to compute mean and std column wise,cause standadization occurs column/feature wise, not sample wise
         return x
 
-    def loss(self,X,Y,w,b):
+    def loss(self,X,Y,W,b):
         z = (W.T@X.T).T +b
         z -= np.max(z, axis=1, keepdims=True)
         logits2 = np.exp(z)
         a = logits2 / np.sum(logits2, axis=1, keepdims=True)
         return -np.sum(Y * np.log(np.clip(a, 1e-15, 1))) / len(X)
 
-    def gradient_descent(self,X,Y,w,b,alpha,iters):
+    def gradient_descent(self,X,Y,W,b,alpha,iters):
         for i in range(iters):
             z = (W.T@X.T).T +b
             z -= np.max(z, axis=1, keepdims=True)
@@ -25,7 +25,7 @@ class Softmax_Regression:
             grads_w = (a-Y).T @ X 
             W-=alpha*grads_w.T
             b -= alpha*np.sum(a-Y,axis=0)
-        return w,b
+        return W,b
     
 
 
